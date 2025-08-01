@@ -1,0 +1,81 @@
+{
+  "creator": "Yosys 0.38 (git sha1 543faed9c8c, x86_64-w64-mingw32-g++ 13.2.0 -march=nocona -msahf -mtune=generic -O2 -fstack-protector-strong -Os)",
+  "modules": {
+    "and_gate": {
+      "attributes": {
+        "cells_not_processed": "00000000000000000000000000000001",
+        "src": "C:/Users/PAVANK~1/rithvik/backend/verilog/design.v:2.1-4.10"
+      },
+      "ports": {
+        "A": {
+          "direction": "input",
+          "bits": [ 2 ]
+        },
+        "B": {
+          "direction": "input",
+          "bits": [ 3 ]
+        },
+        "Y": {
+          "direction": "output",
+          "bits": [ 4 ]
+        }
+      },
+      "cells": {
+        "$and$C:/Users/PAVANK~1/rithvik/backend/verilog/design.v:3$1": {
+          "hide_name": 1,
+          "type": "$and",
+          "parameters": {
+            "A_SIGNED": "00000000000000000000000000000000",
+            "A_WIDTH": "00000000000000000000000000000001",
+            "B_SIGNED": "00000000000000000000000000000000",
+            "B_WIDTH": "00000000000000000000000000000001",
+            "Y_WIDTH": "00000000000000000000000000000001"
+          },
+          "attributes": {
+            "src": "C:/Users/PAVANK~1/rithvik/backend/verilog/design.v:3.14-3.19"
+          },
+          "port_directions": {
+            "A": "input",
+            "B": "input",
+            "Y": "output"
+          },
+          "connections": {
+            "A": [ 2 ],
+            "B": [ 3 ],
+            "Y": [ 4 ]
+          }
+        }
+      },
+      "netnames": {
+        "$and$C:/Users/PAVANK~1/rithvik/backend/verilog/design.v:3$1_Y": {
+          "hide_name": 1,
+          "bits": [ 4 ],
+          "attributes": {
+            "src": "C:/Users/PAVANK~1/rithvik/backend/verilog/design.v:3.14-3.19"
+          }
+        },
+        "A": {
+          "hide_name": 0,
+          "bits": [ 2 ],
+          "attributes": {
+            "src": "C:/Users/PAVANK~1/rithvik/backend/verilog/design.v:2.23-2.24"
+          }
+        },
+        "B": {
+          "hide_name": 0,
+          "bits": [ 3 ],
+          "attributes": {
+            "src": "C:/Users/PAVANK~1/rithvik/backend/verilog/design.v:2.26-2.27"
+          }
+        },
+        "Y": {
+          "hide_name": 0,
+          "bits": [ 4 ],
+          "attributes": {
+            "src": "C:/Users/PAVANK~1/rithvik/backend/verilog/design.v:2.36-2.37"
+          }
+        }
+      }
+    }
+  }
+}
