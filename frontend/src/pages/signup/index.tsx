@@ -1,80 +1,59 @@
-// src/pages/signup/index.tsx
 import React from "react";
-import { Box, Grid, Paper, Typography, Button } from "@mui/material";
+import { Box, Grid, Paper, Typography, Button, useTheme, useMediaQuery } from "@mui/material";
 import { styled } from "@mui/system";
+import { useNavigate } from "react-router-dom";
 import SignupForm from "./SignupForm";
 
-const TransitionContainer = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'isSignUp',
-})(({ isSignUp }: { isSignUp: boolean }) => ({
-  display: 'flex',
-  width: '100%',
-  height: '100%',
-  position: 'relative',
-  transition: 'transform 0.6s ease-in-out',
-  transform: isSignUp ? 'translateX(0%)' : 'translateX(-50%)',
-}));
-type PanelProps = {
-  panelSide: 'left' | 'right';
-  isSignUp: boolean;
-};
-const Panel = styled(Box, {
-  shouldForwardProp: (prop) => prop !== 'panelSide' && prop !== 'isSignUp',
-})<PanelProps>(({ panelSide, isSignUp, theme }: any) => ({
-  position: 'absolute',
-  width: '50%',
-  height: '100%',
-  top: 0,
-  left: panelSide === 'left' ? 0 : '40%',
-  background: panelSide === 'left'
-    ? 'linear-gradient(to bottom right,rgb(118, 229, 14), #333333)'
-    : 'linear-gradient(to bottom right, rgb(118, 229, 14), #424242)',
-  color: 'white',
+const Panel = styled(Box)(({ theme }) => ({
+  background: theme.palette.mode === 'dark'
+    ? 'linear-gradient(135deg, #76e50e, #1e1e1e)'
+    : 'linear-gradient(135deg, #76e50e, #f0f0f0)',
+  color: theme.palette.mode === 'dark' ? 'white' : '#000',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
   padding: theme.spacing(4),
-  zIndex: 1,
-  transition: 'transform 0.6s ease-in-out',
-  transform:
-    panelSide === 'left'
-      ? (isSignUp ? 'translateX(0%)' : 'translateX(100%)')
-      : (isSignUp ? 'translateX(-100%)' : 'translateX(0%)'),
+  height: '100%',
 }));
 
 const Signup: React.FC = () => {
-  const [isSignUp, setIsSignUp] = React.useState(true);
-  const toggleForm = () => setIsSignUp(!isSignUp);
+  const navigate = useNavigate();
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
-    <Grid container justifyContent="center" alignItems="center" minHeight="100vh">
+    <Grid container justifyContent="center" alignItems="center" minHeight="100vh" sx={{ backgroundColor: theme.palette.background.default }}>
       <Paper
-        elevation={6}
-        sx={{ width: 800, height: 500, overflow: 'hidden', position: 'relative', borderRadius: 5, backgroundColor: '#FFFFFF' }}
+        elevation={8}
+        sx={{ width: '100%', maxWidth: 900, height: { xs: 'auto', md: 500 }, overflow: 'hidden', borderRadius: 4, display: 'flex', flexDirection: isSmallScreen ? 'column' : 'row' }}
       >
-        <TransitionContainer isSignUp={isSignUp}>
-          <Box sx={{ width: '50%', p: 5, zIndex: 2, backgroundColor: '#FFFFFF' }}>
-            <Typography variant="h5" gutterBottom sx={{ color: '#000000' }}>
-              Create Account
-            </Typography>
-            <SignupForm />
-          </Box>
+        {/* Left Panel */}
+        <Box sx={{
+          width: isSmallScreen ? '100%' : '50%',
+          p: 5,
+          backgroundColor: theme.palette.background.paper,
+          color: theme.palette.text.primary,
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center'
+        }}>
+          <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold' }}>
+            Create Account
+          </Typography>
+          <SignupForm />
+        </Box>
 
-          <Panel panelSide="left" isSignUp={isSignUp}>
-            <Typography variant="h4" gutterBottom>
-              {isSignUp ? 'Welcome Back!' : 'Hello, Friend!'}
-            </Typography>
-            <Typography variant="body2" align="center" mb={3}>
-              {isSignUp
-                ? 'Enter your personal details to use all of site features'
-                : 'Register with your personal details to use all of site features'}
-            </Typography>
-            <Button variant="outlined" color="inherit" onClick={toggleForm} sx={{ borderColor: 'white', color: 'white' }}>
-              {isSignUp ? 'SIGN IN' : 'SIGN UP'}
-            </Button>
-          </Panel>
-        </TransitionContainer>
+        {/* Right Panel */}
+        <Panel sx={{ width: isSmallScreen ? '100%' : '50%' }}>
+          <Typography variant="h4" gutterBottom>Already have an account?</Typography>
+          <Typography variant="body1" align="center" mb={3}>
+            Sign in now to continue your journey.
+          </Typography>
+          <Button variant="outlined" color="inherit" onClick={() => navigate("/login")} sx={{ borderColor: 'white', color: 'white' }}>
+            SIGN IN
+          </Button>
+        </Panel>
       </Paper>
     </Grid>
   );

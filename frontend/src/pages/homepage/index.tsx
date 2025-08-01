@@ -3,10 +3,13 @@ import {
   Typography,
   Button,
   Stack,
+  Snackbar,
+  Alert,
   useTheme,
   type Theme,
 } from "@mui/material";
 import AnimatedTable from "../../components/AnimatedTable";
+import { useLocation } from "react-router-dom";
 
 const Homepage: React.FC = () => {
   const theme: Theme = useTheme();
@@ -15,6 +18,9 @@ const Homepage: React.FC = () => {
   const [typed, setTyped] = useState<string>("");
   const [charIndex, setCharIndex] = useState<number>(0);
   const [deleting, setDeleting] = useState<boolean>(false);
+  const location = useLocation();
+  const [showSnackbar, setShowSnackbar] = useState(location.state?.showSuccess || false);
+
 
   useEffect(() => {
     const currentWord = words[wordIndex];
@@ -93,6 +99,27 @@ const Homepage: React.FC = () => {
           <AnimatedTable />
         </div>
       </div>
+      <Snackbar
+  open={showSnackbar}
+  autoHideDuration={3000}
+  onClose={() => setShowSnackbar(false)}
+  anchorOrigin={{ vertical: "top", horizontal: "center" }}
+  sx={{ mt: 2 }}
+>
+  <Alert
+    severity="success"
+    sx={{
+      width: "100%",
+      fontSize: "1rem",
+      py: 1.5,
+      px: 4,
+      borderRadius: 2,
+    }}
+  >
+    ✅ Signed in successfully.
+  </Alert>
+</Snackbar>
+
     </div>
   );
 };

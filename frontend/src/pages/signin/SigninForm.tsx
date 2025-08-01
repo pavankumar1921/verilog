@@ -1,9 +1,11 @@
 // src/pages/signin/SigninForm.tsx
-import React from "react";
+import React, { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { Box, TextField, Button, Typography, IconButton } from "@mui/material";
+import { Box, TextField, Button, Typography, IconButton, useTheme } from "@mui/material";
 import { Facebook, Google, LinkedIn } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { Snackbar, Alert } from "@mui/material"
 
 type Inputs = {
   email: string;
@@ -11,7 +13,10 @@ type Inputs = {
 };
 
 const SigninForm: React.FC = () => {
+  const  {login } = useAuth()
+  const theme = useTheme();
   const navigate = useNavigate();
+  // const [snackbarOpen, setSnackbarOpen] = useState(false);
   const {
     register,
     handleSubmit,
@@ -29,25 +34,38 @@ const SigninForm: React.FC = () => {
       if (!response.ok) throw new Error("Login failed");
 
       const result = await response.json();
-      console.log("successful",result)
+      console.log("successful", result);
+      login({email:data.email, token:result.token})
+      // setSnackbarOpen(true)
       localStorage.setItem("authToken", result.token);
       localStorage.setItem("userData", JSON.stringify(result.user));
-      navigate("/homepage");
+      // setTimeout(()=> navigate("/"),2000);
+      navigate("/",{
+        state: {showSuccess: true}
+      })
     } catch (err) {
       console.error("Login error:", err);
     }
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)} display="flex" flexDirection="column" gap={2}>
-      <Box display="flex" gap={2}>
-        <IconButton><Google sx={{ color: '#000' }} /></IconButton>
-        <IconButton><Facebook sx={{ color: '#000' }} /></IconButton>
-        <IconButton><LinkedIn sx={{ color: '#000' }} /></IconButton>
+    <Box
+      component="form"
+      onSubmit={handleSubmit(onSubmit)}
+      display="flex"
+      flexDirection="column"
+      gap={2}
+    >
+      <Box display="flex" gap={2} justifyContent="center">
+        <IconButton><Google sx={{ color: theme.palette.text.primary }} /></IconButton>
+        <IconButton><Facebook sx={{ color: theme.palette.text.primary }} /></IconButton>
+        <IconButton><LinkedIn sx={{ color: theme.palette.text.primary }} /></IconButton>
       </Box>
-      <Typography color="#555" fontSize="0.875rem">
+
+      <Typography color={theme.palette.text.secondary} fontSize="0.875rem">
         or use your email for sign in
       </Typography>
+
       <TextField
         label="Email"
         variant="outlined"
@@ -55,8 +73,12 @@ const SigninForm: React.FC = () => {
         {...register("email", { required: true })}
         error={!!errors.email}
         helperText={errors.email && "Email is required"}
-        sx={{ backgroundColor: '#F5F5F5' }}
+        sx={{
+          backgroundColor: theme.palette.mode === 'dark' ? '#1e1e1e' : '#F5F5F5',
+          input: { color: theme.palette.text.primary }
+        }}
       />
+
       <TextField
         label="Password"
         type="password"
@@ -65,20 +87,61 @@ const SigninForm: React.FC = () => {
         {...register("password", { required: true })}
         error={!!errors.password}
         helperText={errors.password && "Password is required"}
-        sx={{ backgroundColor: '#F5F5F5' }}
+        sx={{
+          backgroundColor: theme.palette.mode === 'dark' ? '#1e1e1e' : '#F5F5F5',
+          input: { color: theme.palette.text.primary }
+        }}
       />
-      <Typography variant="caption" alignSelf="flex-end" sx={{ color: '#000', cursor: 'pointer' }}>
+
+      <Typography
+        variant="caption"
+        alignSelf="flex-end"
+        sx={{
+          color: theme.palette.text.primary,
+          cursor: "pointer",
+        }}
+      >
         Forget Your Password?
       </Typography>
+
       <Button
         type="submit"
         variant="contained"
         fullWidth
-        sx={{ mt: 1, backgroundColor: '#000', color: '#FFF', '&:hover': { backgroundColor: '#333' } }}
+        sx={{
+          mt: 1,
+          backgroundColor: theme.palette.mode === 'dark' ? '#444' : '#000',
+          color: '#FFF',
+          '&:hover': {
+            backgroundColor: theme.palette.mode === 'dark' ? '#666' : '#333',
+          },
+        }}
       >
         SIGN IN
       </Button>
+      {/* <Snackbar
+  open={snackbarOpen}
+  autoHideDuration={3000}
+  onClose={() => setSnackbarOpen(false)}
+  anchorOrigin={{ vertical: "top", horizontal: "center" }}
+  sx={{ mt: 2 }}
+>
+  <Alert
+    severity="success"
+    sx={{
+      width: "100%",
+      fontSize: "1rem",
+      py: 1.5,
+      px: 4,
+      borderRadius: 2,
+    }}
+  >
+     Signed in successfully.
+  </Alert>
+</Snackbar> */}
+
     </Box>
+
   );
 };
 

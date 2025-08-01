@@ -1,7 +1,13 @@
-// src/pages/signup/SignupForm.tsx
 import React from "react";
-import { useForm,type SubmitHandler } from "react-hook-form";
-import { Box, TextField, Button, Typography, IconButton } from "@mui/material";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  IconButton,
+  useTheme
+} from "@mui/material";
 import { Facebook, Google, LinkedIn } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
@@ -12,6 +18,7 @@ type Inputs = {
 };
 
 const SignupForm: React.FC = () => {
+  const theme = useTheme();
   const navigate = useNavigate();
   const {
     register,
@@ -38,15 +45,23 @@ const SignupForm: React.FC = () => {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit(onSubmit)} display="flex" flexDirection="column" gap={2}>
-      <Box display="flex" gap={2}>
-        <IconButton><Google sx={{ color: '#000' }} /></IconButton>
-        <IconButton><Facebook sx={{ color: '#000' }} /></IconButton>
-        <IconButton><LinkedIn sx={{ color: '#000' }} /></IconButton>
+    <Box
+      component="form"
+      onSubmit={handleSubmit(onSubmit)}
+      display="flex"
+      flexDirection="column"
+      gap={2}
+    >
+      <Box display="flex" gap={2} justifyContent="center">
+        <IconButton><Google sx={{ color: theme.palette.text.primary }} /></IconButton>
+        <IconButton><Facebook sx={{ color: theme.palette.text.primary }} /></IconButton>
+        <IconButton><LinkedIn sx={{ color: theme.palette.text.primary }} /></IconButton>
       </Box>
-      <Typography color="#555" fontSize="0.875rem">
+
+      <Typography color={theme.palette.text.secondary} fontSize="0.875rem">
         or use your email for registration
       </Typography>
+
       <TextField
         label="Name"
         variant="outlined"
@@ -54,8 +69,12 @@ const SignupForm: React.FC = () => {
         {...register("name", { required: true })}
         error={!!errors.name}
         helperText={errors.name && "Name is required"}
-        sx={{ backgroundColor: '#F5F5F5' }}
+        sx={{
+          backgroundColor: theme.palette.mode === 'dark' ? '#1e1e1e' : '#F5F5F5',
+          input: { color: theme.palette.text.primary }
+        }}
       />
+
       <TextField
         label="Email"
         type="email"
@@ -64,8 +83,12 @@ const SignupForm: React.FC = () => {
         {...register("email", { required: true })}
         error={!!errors.email}
         helperText={errors.email && "Email is required"}
-        sx={{ backgroundColor: '#F5F5F5' }}
+        sx={{
+          backgroundColor: theme.palette.mode === 'dark' ? '#1e1e1e' : '#F5F5F5',
+          input: { color: theme.palette.text.primary }
+        }}
       />
+
       <TextField
         label="Password"
         type="password"
@@ -74,18 +97,33 @@ const SignupForm: React.FC = () => {
         {...register("password", { required: true })}
         error={!!errors.password}
         helperText={errors.password && "Password is required"}
-        sx={{ backgroundColor: '#F5F5F5' }}
+        sx={{
+          backgroundColor: theme.palette.mode === 'dark' ? '#1e1e1e' : '#F5F5F5',
+          input: { color: theme.palette.text.primary }
+        }}
       />
+
       <Button
         type="submit"
         variant="contained"
         fullWidth
-        sx={{ mt: 1, backgroundColor: '#000', color: '#FFF', '&:hover': { backgroundColor: '#333' } }}
+        sx={{
+          mt: 1,
+          backgroundColor: theme.palette.mode === 'dark' ? '#444' : '#000',
+          color: '#FFF',
+          '&:hover': {
+            backgroundColor: theme.palette.mode === 'dark' ? '#666' : '#333',
+          },
+        }}
       >
         SIGN UP
       </Button>
+
       <Typography variant="body2" align="center">
-        Already have an account? <a href="/login" className="text-blue-500 hover:underline">Sign in here</a>
+        Already have an account?{' '}
+        <a href="/login" style={{ color: theme.palette.primary.main, textDecoration: 'underline' }}>
+          Sign in here
+        </a>
       </Typography>
     </Box>
   );

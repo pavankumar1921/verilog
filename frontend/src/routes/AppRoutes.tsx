@@ -6,6 +6,7 @@ import Homepage from '../pages/homepage';
 import CodingPlayground from '../pages/eda/CodingPlayground';
 import Coding from '../pages/Coding';
 import TrainingPlayground from '../pages/eda/TrainingPlayground';
+import ProtectedRoute from './ProtectedRoute';
 
 const AppRoutes = () => {
   return (
@@ -14,7 +15,7 @@ const AppRoutes = () => {
       <Route path="/login" element={<Signin />} />
       <Route path="/" element={<Homepage />} />
       <Route path="/codingplayground" element={<CodingPlayground />} />
-      <Route path="/trainingplayground" element={<TrainingPlayground />} />
+      <Route path="/trainingplayground" element={ <ProtectedRoute> <TrainingPlayground /></ProtectedRoute>} />
       <Route path="/coding" element={<Coding/>} />
     </Routes>
   );

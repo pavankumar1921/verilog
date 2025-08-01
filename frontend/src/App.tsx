@@ -5,6 +5,7 @@ import './App.css'
 import AppRoutes from './routes/AppRoutes'
 import Navbar from './components/Navbar'
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
+import { AuthProvider } from './context/AuthContext'
 
 function App() {
  const [isDarkMode, setIsDarkMode] = useState(true);
@@ -26,11 +27,14 @@ function App() {
   );
   return (
   <>
-  <ThemeProvider theme={theme}>
-    <CssBaseline/>
-    <Navbar toggleTheme={() => setIsDarkMode(!isDarkMode)} isDarkMode={isDarkMode} />
-    <AppRoutes/>
-  </ThemeProvider>
+  <AuthProvider>
+    <ThemeProvider theme={theme}>
+      <CssBaseline/>
+        <Navbar toggleTheme={() => setIsDarkMode(!isDarkMode)} isDarkMode={isDarkMode} />
+      <AppRoutes/>
+    </ThemeProvider>
+  </AuthProvider>
+  
     
   </>
   )
