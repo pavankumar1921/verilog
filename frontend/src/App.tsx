@@ -6,6 +6,7 @@ import AppRoutes from './routes/AppRoutes'
 import Navbar from './components/Navbar'
 import { ThemeProvider, createTheme, CssBaseline } from "@mui/material";
 import { AuthProvider } from './context/AuthContext'
+import Footer from './components/Footer'
 
 function App() {
  const [isDarkMode, setIsDarkMode] = useState(true);
@@ -32,6 +33,7 @@ function App() {
       <CssBaseline/>
         <Navbar toggleTheme={() => setIsDarkMode(!isDarkMode)} isDarkMode={isDarkMode} />
       <AppRoutes/>
+      <Footer/>
     </ThemeProvider>
   </AuthProvider>
   

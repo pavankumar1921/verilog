@@ -168,25 +168,25 @@ export default function Navbar({ toggleTheme, isDarkMode }: NavbarProps) {
           <HoverDropdown
             label="Courses"
             menuItems={[
-              { label: "Digital", to: "/courses/Digital" },
-              { label: "Verilog", to: "/courses/Verilog" },
-              { label: "SystemVerilog", to: "/courses/SystemVerilog" },
-              { label: "UVM", to: "/courses/UVM" },
+              { label: "Digital", to: "/courses/digital" },
+              { label: "Verilog", to: "/courses/verilog" },
+              { label: "SystemVerilog", to: "/courses/systemVerilog" },
+              { label: "UVM", to: "/courses/uvm" },
             ]}
           />
 
           <HoverDropdown
             label="Projects"
             menuItems={[
-              { label: "Design", to: "/courses/Design" },
-              { label: "Verification", to: "/courses/Verification" },
+              { label: "Design", to: "/projects/design" },
+              { label: "Verification", to: "/projects/verification" },
             ]}
           />
 
           <HoverDropdown
             label="Interview"
             menuItems={[
-              { label: "Question sets", to: "/interview/Question sets" },
+              { label: "Question sets", to: "/interview/questionSets" },
               { label: "Sample Resumes", to: "/interview/mock" },
             ]}
           />
@@ -196,7 +196,7 @@ export default function Navbar({ toggleTheme, isDarkMode }: NavbarProps) {
             menuItems={[
               { label: "Help Center", to: "/support/help" },
               { label: "Contact Us", to: "/support/contact" },
-              { label: "Feedback", to: "/support/Feedback" },
+              { label: "Feedback", to: "/support/feedback" },
             ]}
           />
 
