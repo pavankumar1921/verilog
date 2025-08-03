@@ -16,7 +16,7 @@
     "@mui/icons-material": "^7.1.0",
     "@mui/material": "^7.1.0",
     "@tailwindcss/cli": "^4.1.7",
-    "framer-motion": "^12.23.9",
+    "framer-motion": "^12.23.12",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.56.4",
