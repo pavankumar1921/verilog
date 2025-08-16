@@ -14,15 +14,13 @@ import {
   Grow,
   IconButton,
   Tooltip,
-  Divider,
 } from "@mui/material";
-import { Snackbar,Alert } from "@mui/material"
 import LightModeIcon from "@mui/icons-material/LightMode";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useTheme } from "@mui/material/styles";
 
+// Styles for the hover effect in menu items
 const hoverStyles = {
   textTransform: "none",
   position: "relative",
@@ -48,14 +46,10 @@ const hoverStyles = {
   },
 };
 
-type HoverDropdownProps = {
-  label: string;
-  menuItems: { label: string; to: string }[];
-};
-
-function HoverDropdown({ label, menuItems }: HoverDropdownProps) {
+// Dropdown menu component
+function HoverDropdown({ label, menuItems = [] }) {
   const [open, setOpen] = useState(false);
-  const anchorRef = React.useRef<HTMLButtonElement>(null);
+  const anchorRef = React.useRef(null);
 
   return (
     <div onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)}>
@@ -107,99 +101,60 @@ function HoverDropdown({ label, menuItems }: HoverDropdownProps) {
   );
 }
 
-type NavbarProps = {
-  toggleTheme: () => void;
-  isDarkMode: boolean;
-};
-
-export default function Navbar({ toggleTheme, isDarkMode }: NavbarProps) {
-  const navigate = useNavigate()
-  const { user, logout } = useAuth();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const [snackbarOpen , setSnackbarOpen] = useState(false)
-
-  const handleProfileClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(anchorEl ? null : event.currentTarget);
-  };
+// Navbar component
+export default function Navbar({ toggleTheme, isDarkMode }) {
+  const theme = useTheme(); // Use theme hook inside the component
 
   return (
     <AppBar
-      position="static"
+      position="fixed"
       elevation={0}
-      sx={{ backgroundColor: "background.paper", color: "text.primary" }}
+      sx={{
+        zIndex: 2000,
+        backgroundColor:
+          theme.palette.mode === "dark"
+            ? "rgba(0, 0, 0, 0)" // Dark mode transparent background
+            : "rgba(255, 255, 255, 0.2)", // Light mode transparent background
+        backdropFilter: "blur(10px)", // Glassmorphism effect
+        WebkitBackdropFilter: "blur(10px)", // Safari support
+        color: "text.primary",
+        boxShadow: "none", // Remove box shadow for a clean look
+      }}
     >
-     <Snackbar
-  open={snackbarOpen}
-  autoHideDuration={2000}
-  onClose={() => setSnackbarOpen(false)}
-  anchorOrigin={{ vertical: "top", horizontal: "center" }}
-  sx={{ mt: 2 }}
->
-  <Alert
-    severity="success"
-    sx={{
-      width: "100%",
-      fontSize: "1rem",
-      py: 1.5,
-      px: 4,
-      borderRadius: 2,
-    }}
-  >
-     You have been logged out.
-  </Alert>
-</Snackbar>
-
-
       <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
         <Stack direction="row" spacing={3} alignItems="center">
           <Typography
             component={Link}
             to="/"
             variant="h6"
-            sx={{ fontWeight: "bold", textDecoration: "none", color: "inherit" }}
+            sx={{
+              fontWeight: "bold",
+              textDecoration: "none",
+              color: "inherit",
+            }}
           >
             <span style={{ color: "limegreen" }}>S</span>ilicon
             <span style={{ color: "limegreen" }}>S</span>andbox
           </Typography>
 
-          <HoverDropdown label="Coding" menuItems={[{ label: "Coding", to: "/coding" }]} />
-
           <HoverDropdown
-            label="Courses"
-            menuItems={[
-              { label: "Digital", to: "/courses/digital" },
-              { label: "Verilog", to: "/courses/verilog" },
-              { label: "SystemVerilog", to: "/courses/systemVerilog" },
-              { label: "UVM", to: "/courses/uvm" },
-            ]}
+            label="Codelab"
+            menuItems={[{ label: "Learn & Code", to: "/skilltrack" }]}
           />
-
-          <HoverDropdown
-            label="Projects"
-            menuItems={[
-              { label: "Design", to: "/projects/design" },
-              { label: "Verification", to: "/projects/verification" },
-            ]}
-          />
-
           <HoverDropdown
             label="Interview"
             menuItems={[
-              { label: "Question sets", to: "/interview/questionSets" },
+              { label: "Question sets", to: "/interview/Question sets" },
               { label: "Sample Resumes", to: "/interview/mock" },
             ]}
           />
-
           <HoverDropdown
             label="Support"
             menuItems={[
-              { label: "Help Center", to: "/support/help" },
-              { label: "Contact Us", to: "/support/contact" },
-              { label: "Feedback", to: "/support/feedback" },
+              { label: "Contact Us", to: "/contact" },
+              { label: "Feedback", to: "/Feedback" },
             ]}
           />
-
           <HoverDropdown
             label="About Us"
             menuItems={[
@@ -211,45 +166,22 @@ export default function Navbar({ toggleTheme, isDarkMode }: NavbarProps) {
         </Stack>
 
         <Stack direction="row" spacing={2} alignItems="center">
+          <Tooltip title="Profile">
+            <IconButton component={Link} to="/profile" color="inherit">
+              <AccountCircleIcon />
+            </IconButton>
+          </Tooltip>
+          <Button component={Link} to="/login" color="inherit">
+            Login
+          </Button>
+          <Button component={Link} to="/verilog" color="inherit">
+            Verilog
+          </Button>
           <Tooltip title={isDarkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}>
             <IconButton onClick={toggleTheme} color="inherit">
               {isDarkMode ? <LightModeIcon /> : <DarkModeIcon />}
             </IconButton>
           </Tooltip>
-
-          {user ? (
-            <>
-              <Tooltip title="Account">
-                <IconButton color="inherit" onClick={handleProfileClick}>
-                  <AccountCircleIcon />
-                </IconButton>
-              </Tooltip>
-              <Popper open={open} anchorEl={anchorEl} placement="bottom-end" transition disablePortal>
-                {({ TransitionProps }) => (
-                  <Grow {...TransitionProps}>
-                    <Paper sx={{ mt: 1, minWidth: 180 }}>
-                      <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
-                        <MenuList autoFocusItem={open}>
-                          <MenuItem component={Link} to="/profile" onClick={() => setAnchorEl(null)}>
-                            Profile
-                          </MenuItem>
-                          <MenuItem onClick={() => { logout(); setAnchorEl(null); setSnackbarOpen(true); setTimeout(()=>navigate("/"),1500);}}>Logout</MenuItem>
-                          <Divider />
-                          <MenuItem disabled>Settings</MenuItem>
-                        </MenuList>
-                      </ClickAwayListener>
-                    </Paper>
-                  </Grow>
-                )}
-              </Popper>
-            </>
-          ) : (
-            <Button component={Link} to="/login" color="inherit">
-              Login
-            </Button>
-          )}
-
-          
         </Stack>
       </Toolbar>
     </AppBar>
