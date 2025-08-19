@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route,Navigate  } from 'react-router-dom';
 import Signin from '../pages/signin';
 import Signup from '../pages/signup';
 import Home from '../pages/homepage';
@@ -21,6 +21,14 @@ import Feedback from '../pages/support/Feedback';
 import Team from '../pages/about/Team';
 import Mission from '../pages/about/Mission';
 import Careers from '../pages/about/Careers';
+// import Training from "./components/training";
+import TrainCodeTabs from "../pages/traincode/TrainCodeTabs";
+import Codedes from "../pages/traincode/codedes";
+import StartCoding from "../pages/traincode/startcodeing";
+import SampleCode from "../pages/traincode/samplecode";
+import PubSub from "../pages/traincode/pubsub";
+import CodeS from "../pages/codeS";
+
 
 const AppRoutes = () => {
   return (
@@ -30,7 +38,16 @@ const AppRoutes = () => {
       <Route path="/" element={<Home />} />
       <Route path="/codingplayground" element={<CodingPlayground />} />
       <Route path="/trainingplayground" element={ <ProtectedRoute> <TrainingPlayground /></ProtectedRoute>} />
-      <Route path="/coding" element={<Coding/>} />
+      <Route path="/skilltrack" element={<Coding/>} />
+      <Route path="/codeS" element={<CodeS />} />
+
+      <Route path="/traincode" element={<TrainCodeTabs />}>
+          <Route path="/traincode/codedes" element={<Codedes />} />
+          <Route path="/traincode/samplecode" element={<SampleCode />} />
+          <Route path="/traincode/startcoding" element={<StartCoding />} />
+          <Route path="/traincode/public-submissions" element={<PubSub />} />
+          <Route index element={<Navigate to="/traincode/codedes" />} />
+      </Route> 
       
       {/* courses*/}
       <Route path="/courses/digital" element={<DigitalCourse />} />

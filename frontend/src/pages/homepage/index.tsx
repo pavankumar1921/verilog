@@ -52,8 +52,8 @@ const cardData = [
   },
 ];
 
-const MotionGrid = motion(Grid);
-const MotionBox = motion(Box);
+const MotionGrid = motion.create(Grid);
+const MotionBox = motion.create(Box);
 
 export default function Home() {
   const theme = useTheme();
