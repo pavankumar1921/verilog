@@ -65,7 +65,7 @@ const AppRoutes = () => {
 
       {/* Support */}
       <Route path="/support/help" element={<HelpCenter />} />
-      <Route path="/support/contact" element={<Contact />} />
+      <Route path="/contact" element={<Contact />} />
       <Route path="/support/feedback" element={<Feedback />} />
 
       {/* About Us */}
