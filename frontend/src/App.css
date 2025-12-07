@@ -1,13 +1,40 @@
+/* Base */
+html, body, #root { height: 100%; }
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  overflow: auto;             /* let the page scroll (Navbar/Footer are outside) */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+/* Smooth scroll + snap on the document */
+html {
+  scroll-behavior: smooth;
 }
+
+/* Use BODY as the scroll container (one place only) */
+body {
+  /* if your Navbar is fixed ~64px high, offset snaps so sections aren't hidden */
+  scroll-snap-type: y mandatory;
+  scroll-padding-top: 64px;   /* tweak if your Navbar height differs */
+}
+
+/* Sections opt-in to snap */
+section[data-snap] {
+  min-height: 100svh;         /* better on mobile than 100vh */
+  scroll-snap-align: start;
+}
+
+/* Optional: last element can snap to end */
+[data-snap-end] { scroll-snap-align: end; }
+
+/* Defensive: images never cause horizontal overflow */
+img { max-width: 100%; height: auto; display: block; }
+
+/* Your themed backgrounds */
+.firstSection  { background: linear-gradient(180deg, #fff 0%,   #dae7fd 100%); }
+.secondSection { background: linear-gradient(180deg, #f0fff0 0%, #cce5cc 100%); }
+.thirdSection  { background: linear-gradient(180deg, #fff0f5 0%, #e6cce5 100%); }
+
+/* Optional: if you scroll to sections via scrollIntoView, add margin offset too */
+section { scroll-margin-top: 64px; } /* match navbar height */

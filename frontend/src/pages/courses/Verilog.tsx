@@ -1,9 +1,21 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, Grid } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import CourseCard from "../../components/CourseCard";
 
 const VerilogCourse = () => {
   const theme = useTheme();
+
+  const courses = [
+    {
+      title: "Verilog Basics",
+      image: "/verilog-1.jpg",
+    },
+    {
+      title: "Advanced Verilog",
+      image: "/verilog-2.jpg",
+    },
+  ];
 
   return (
     <Box
@@ -15,8 +27,16 @@ const VerilogCourse = () => {
       }}
     >
       <Typography variant="h4" gutterBottom>
-        Verilog Course
+        Verilog Courses
       </Typography>
+
+      <Grid container spacing={3}>
+        {courses.map((course, idx) => (
+          <div key={idx}>
+            <CourseCard {...course} />
+          </div>
+        ))}
+      </Grid>
     </Box>
   );
 };
