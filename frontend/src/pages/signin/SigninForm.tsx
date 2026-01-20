@@ -1,11 +1,12 @@
 // src/pages/signin/SigninForm.tsx
-import React, { useState } from "react";
+// import React, { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { Box, TextField, Button, Typography, IconButton, useTheme } from "@mui/material";
 import { Facebook, Google, LinkedIn } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { Snackbar, Alert } from "@mui/material"
+import API_URL from "../../config/api";
+// import { Snackbar, Alert } from "@mui/material"
 
 type Inputs = {
   email: string;
@@ -25,7 +26,7 @@ const SigninForm: React.FC = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data: any) => {
     try {
-      const response = await fetch("http://localhost:5000/api/login", {
+      const response = await fetch(`${API_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
