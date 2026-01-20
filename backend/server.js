@@ -16,7 +16,7 @@ app.use("/api", require("./routes/auth"));
 
 
 mongoose
-  .connect("mongodb://localhost:27017/verilog-auth", {
+  .connect("process.env.MONGO_URL", {
     // useNewUrlParser: true,
     // useUnifiedTopology: true,
   })
