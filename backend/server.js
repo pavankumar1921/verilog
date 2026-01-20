@@ -16,7 +16,7 @@ app.use("/api", require("./routes/auth"));
 
 
 mongoose
-  .connect("process.env.MONGO_URL", {
+  .connect(process.env.MONGO_URL, {
     // useNewUrlParser: true,
     // useUnifiedTopology: true,
   })
