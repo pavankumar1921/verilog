@@ -397,7 +397,7 @@
 // export default WaveformViewer;
 
 import React, { useRef, useEffect, useState, useLayoutEffect, useCallback } from "react";
-import { Typography, Stack, Button, IconButton, Box, Tooltip } from "@mui/material";
+import { Typography, Stack, IconButton, Box, Tooltip } from "@mui/material";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import RefreshIcon from "@mui/icons-material/Refresh";
@@ -698,7 +698,7 @@ const WaveformViewer: React.FC<{ vcdData: VCDData | null }> = ({ vcdData }) => {
     const plotW = canvas.width - marginLeft - marginRight;
     if (plotW <= 0) return;
 
-    const contentW = plotW * zoom;
+    // const contentW = plotW * zoom;
     const centerCss = typeof centerCssX === "number"
       ? centerCssX
       : ((canvas.getBoundingClientRect().left + (marginLeft / dpr)) + (plotW / dpr) / 2);

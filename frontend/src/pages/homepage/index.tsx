@@ -879,7 +879,7 @@ const Homepage: React.FC = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {questions.map((q, idx) => (
+            {questions.map((q) => (
               <div
                 key={q.id}
                 className="group relative overflow-hidden rounded-2xl p-6 transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl cursor-pointer"

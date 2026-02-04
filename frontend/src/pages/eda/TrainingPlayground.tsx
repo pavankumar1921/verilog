@@ -266,21 +266,8 @@ import CodeEditor from "../../components/CodeEditor";
 import PopupDialog from "../../components/PopupDialog";
 import WaveformViewer, { type VCDData } from "../../components/WaveformViewer";
 import { AnimatePresence, motion } from "framer-motion";
+import { API_URL } from "../../config/env";
 
-// MUI icons (replacing lucide-react)
-import MemoryIcon from "@mui/icons-material/Memory"; // Cpu
-import EmojiEventsIcon from "@mui/icons-material/EmojiEvents"; // Trophy
-import PlayArrowIcon from "@mui/icons-material/PlayArrow"; // Play
-import ShowChartIcon from "@mui/icons-material/ShowChart"; // Waves
-import LayersIcon from "@mui/icons-material/Layers"; // RTL
-import LightbulbIcon from "@mui/icons-material/Lightbulb"; // Hint
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import TerminalIcon from "@mui/icons-material/Terminal";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
-import LightModeIcon from "@mui/icons-material/LightMode";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const trainingQuestions = [
   {
@@ -364,7 +351,10 @@ const TrainingPlayground: React.FC = () => {
       // UI-only terminal lines (derived from existing output state)
       setTerminalLines([{ type: "info", text: "▶ Starting simulation...", time: "0ms" }]);
 
-      const response = await fetch("http://localhost:5000/api/simulate", {
+      // UI-only terminal lines (derived from existing output state)
+      setTerminalLines([{ type: "info", text: "▶ Starting simulation...", time: "0ms" }]);
+
+      const response = await fetch(`${API_URL}/simulate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ designCode, testbenchCode: tbCode }),
@@ -865,7 +855,8 @@ const TrainingPlayground: React.FC = () => {
       >
         <object
           type="image/svg+xml"
-          data="http://localhost:5000/simulations/temp/schematic.svg"
+            //  data={`${API_URL.replace("/api", "")}${svgPath}`}
+          data={`${API_URL.replace("/api", "")}`}
           style={{ width: "100%", height: "80vh" }}
         >
           Your browser does not support SVG.

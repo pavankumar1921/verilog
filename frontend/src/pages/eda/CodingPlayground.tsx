@@ -147,6 +147,7 @@ import {
 import PopupDialog from "../../components/PopupDialog";
 import CodeEditor from "../../components/CodeEditor";
 import WaveformViewer, { type VCDData } from "../../components/WaveformViewer";
+import API_URL from "../../config/api";
 
 const CodingPlayground: React.FC = () => {
   const navigate = useNavigate();
@@ -168,7 +169,7 @@ const CodingPlayground: React.FC = () => {
       setSimulationOutput("Running simulation...\n");
       setWaveformData(null);
 
-      const response = await fetch("http://localhost:5000/api/simulate", {
+      const response = await fetch(`${API_URL}/simulate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ designCode, testbenchCode: tbCode }),
@@ -414,7 +415,8 @@ const CodingPlayground: React.FC = () => {
         >
           <object
             type="image/svg+xml"
-            data="http://localhost:5000/simulations/temp/schematic.svg"
+            // data={`${API_URL.replace("/api", "")}${svgPath}`}
+             data={`${API_URL.replace("/api", "")}`}
             style={{ width: "100%", height: "80vh" }}
           >
             Your browser does not support SVG.
