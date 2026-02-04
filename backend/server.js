@@ -1,8 +1,9 @@
+require("./src/config/env")
 const express = require('express')
 const cors = require('cors')
 const mongoose = require("mongoose")
 require('dotenv').config()
-const simulateRoute = require('./routes/simulate');
+const simulateRoute = require('./src/routes/simulate');
 // const vcdRoute = require('./routes/vcd.cjs')
 
 const app = express()
@@ -11,7 +12,7 @@ const path = require("path");
 
 app.use(cors())
 app.use(express.json())
-app.use("/api", require("./routes/auth"));
+app.use("/api", require("./src/routes/auth"));
 
 
 

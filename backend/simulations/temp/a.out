@@ -7,9 +7,9 @@
 :vpi_module "C:\msys64\mingw64\lib\ivl\vhdl_textio.vpi";
 :vpi_module "C:\msys64\mingw64\lib\ivl\v2005_math.vpi";
 :vpi_module "C:\msys64\mingw64\lib\ivl\va_math.vpi";
-S_000001e4dc056bb0 .scope module, "my_module" "my_module" 2 1;
+S_000001fb167c6bb0 .scope module, "my_module" "my_module" 2 1;
  .timescale 0 0;
-S_000001e4dc056d40 .scope module, "tb" "tb" 3 1;
+S_000001fb167c6d40 .scope module, "tb" "tb" 3 1;
  .timescale 0 0;
 # The file index is used to find the file name in the following table.
 :file_names 4;

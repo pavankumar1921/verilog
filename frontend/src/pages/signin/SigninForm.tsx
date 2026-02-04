@@ -6,6 +6,7 @@ import { Facebook, Google, LinkedIn } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { Snackbar, Alert } from "@mui/material"
+import { API_URL } from "../../config/env";
 
 type Inputs = {
   email: string;
@@ -25,14 +26,16 @@ const SigninForm: React.FC = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data: any) => {
     try {
-      const response = await fetch("http://localhost:5000/api/login", {
+      const response = await fetch(`${API_URL}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
 
-      if (!response.ok) throw new Error("Login failed");
-
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.message || "Login failed");
+      }
       const result = await response.json();
       console.log("successful", result);
       login({email:data.email, token:result.token})

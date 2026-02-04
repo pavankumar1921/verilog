@@ -20,14 +20,12 @@ function parseVCD(vcdText) {
     line = line.trim();
     if (line === "" || line.startsWith("$comment")) continue;
 
-    // Timescale
     if (line.startsWith("$timescale")) {
       const match = line.match(/\$timescale\s+(.+?)\s+\$end/);
       if (match) scale = match[1];
       continue;
     }
 
-    // $var wire 1 ! A $end
     if (line.startsWith("$var")) {
       const match = line.match(/\$var\s+\w+\s+(\d+)\s+(\S+)\s+(\S+)/);
       if (match) {
@@ -38,14 +36,12 @@ function parseVCD(vcdText) {
       continue;
     }
 
-    // Time change
     if (line.startsWith("#")) {
       time = parseInt(line.slice(1));
       if (time > endtime) endtime = time;
       continue;
     }
 
-    // Scalar change: 1! / 0"
     if (/^[01xz][!-~]/.test(line)) {
       const value = line[0];
       const symbol = line[1];
@@ -54,12 +50,11 @@ function parseVCD(vcdText) {
       }
       continue;
     }
-
-    // Vector change: b1100 ! or r3.14 !
+  
     if (/^[br][^\s]+\s[!-~]/.test(line)) {
       const [, valAndSym] = line.split(/^([br][^\s]+\s[!-~])/);
       const parts = line.split(" ");
-      const value = parts[0].substring(1); // Remove b or r
+      const value = parts[0].substring(1); 
       const symbol = parts[1];
       if (symbolToName[symbol]) {
         changes.push([time, symbol, value]);
@@ -80,7 +75,6 @@ router.post("/simulate", async (req, res) => {
   try {
     const { designCode, testbenchCode } = req.body;
 
-    // Change output directory to simulations/temp
     const outDir = path.join(__dirname, '../simulations/temp');
     fs.mkdirSync(outDir, { recursive: true });
 
@@ -95,7 +89,6 @@ router.post("/simulate", async (req, res) => {
     fs.writeFileSync(designPath, designCode);
     fs.writeFileSync(testPath, testbenchCode);
 
-    // Promisify exec with working directory set to outDir
     const execPromise = (command) => {
       return new Promise((resolve, reject) => {
         exec(command, { cwd: outDir }, (error, stdout, stderr) => {
@@ -108,7 +101,6 @@ router.post("/simulate", async (req, res) => {
       });
     };
 
-    // Use relative paths since we're setting cwd
     const compile = `iverilog -o a.out design.v testbench.v`;
     console.log("🔧 Compiling:", compile);
    

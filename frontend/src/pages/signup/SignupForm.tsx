@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { Facebook, Google, LinkedIn } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../../config/env";
 
 type Inputs = {
   name: string;
@@ -28,13 +29,17 @@ const SignupForm: React.FC = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      const response = await fetch("http://localhost:5000/api/signup", {
+      const response = await fetch(`${API_URL}/api/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
 
-      if (!response.ok) throw new Error("Signup failed");
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.message || "Signup failed");
+
+      }
 
       const result = await response.json();
       console.log("✅ Signup successful:", result);
