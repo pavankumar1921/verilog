@@ -5,7 +5,6 @@ import { Box, TextField, Button, Typography, IconButton, useTheme } from "@mui/m
 import { Facebook, Google, LinkedIn } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { Snackbar, Alert } from "@mui/material"
 import { API_URL } from "../../config/env";
 
 type Inputs = {
