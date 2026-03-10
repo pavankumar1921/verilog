@@ -12,6 +12,7 @@ dotenv.config({
 module.exports = {
   ENV,
   PORT: Number(process.env.PORT),
+  MONGODB_URL: process.env.MONGODB_URL,
 //   IVERILOG_PATH: process.env.IVERILOG_PATH,
 //   VVP_PATH: process.env.VVP_PATH,
 //   YOSYS_PATH: process.env.YOSYS_PATH,

@@ -75,7 +75,8 @@ router.post("/simulate", async (req, res) => {
   try {
     const { designCode, testbenchCode } = req.body;
 
-    const outDir = path.join(__dirname, '../simulations/temp');
+    // const outDir = path.join(__dirname, '../simulations/temp');
+    const outDir = path.join(process.cwd(), "src", "simulations", "temp");
     fs.mkdirSync(outDir, { recursive: true });
 
     const designPath = path.join(outDir, "design.v");

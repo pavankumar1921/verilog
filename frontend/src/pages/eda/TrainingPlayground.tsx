@@ -76,6 +76,7 @@ const TrainingPlayground: React.FC = () => {
   const [showWaveformPopup, setShowWaveformPopup] = useState(false);
   const [showRTLPopup, setShowRTLPopup] = useState(false);
 
+  const [rtlPath, setRtlPath] = useState<string | null>(null);
   // UI-only state (does not change your simulation behavior)
   const [darkMode, setDarkMode] = useState(true);
   const [showQuestion, setShowQuestion] = useState(true);
@@ -127,8 +128,12 @@ const TrainingPlayground: React.FC = () => {
         });
 
         setSimulationSuccess(true);
-        if (result.waveform) setWaveformData(result.waveform);
-
+        if (result.waveform) {
+          setWaveformData(result.waveform);
+        }
+        if (result.svg){
+          setRtlPath(result.svg)
+        }
         setTerminalLines((prev) => [
           ...prev,
           { type: "success", text: "✓ Simulation completed successfully!", time: "—" },
@@ -508,20 +513,19 @@ const TrainingPlayground: React.FC = () => {
                     </button>
 
                     <button
-                      onClick={() => setShowRTLPopup(true)}
-                      disabled={!simulationSuccess}
-                      className={`flex items-center gap-2 px-6 py-2.5 rounded-lg font-medium border ${border} transition-all ${
-                        !simulationSuccess
-                          ? "opacity-50 cursor-not-allowed"
-                          : darkMode
-                          ? "hover:bg-gray-700 hover:scale-[1.02]"
-                          : "hover:bg-gray-100 hover:scale-[1.02]"
-                      }`}
-                      type="button"
-                    >
-                      <LayersIcon sx={{ fontSize: 18 }} className="text-orange-400" />
-                      RTL
-                    </button>
+  onClick={() => setShowRTLPopup(true)}
+  disabled={!simulationSuccess || !rtlPath}
+  className={`flex items-center gap-2 px-6 py-2.5 rounded-lg font-medium border ${border} transition-all ${
+    !simulationSuccess || !rtlPath
+      ? "opacity-50 cursor-not-allowed"
+      : darkMode
+      ? "hover:bg-gray-700 hover:scale-[1.02]"
+      : "hover:bg-gray-100 hover:scale-[1.02]"
+  }`}
+>
+  <LayersIcon sx={{ fontSize: 18 }} className="text-orange-400" />
+  RTL
+</button>
 
                     <button
                       className={`flex items-center gap-2 px-6 py-2.5 rounded-lg font-medium border ${border} ${
@@ -600,19 +604,24 @@ const TrainingPlayground: React.FC = () => {
       </PopupDialog>
 
       <PopupDialog
-        open={showRTLPopup}
-        onClose={() => setShowRTLPopup(false)}
-        title="RTL Schematic"
-      >
-        <object
-          type="image/svg+xml"
-            //  data={`${API_URL.replace("/api", "")}${svgPath}`}
-          data={`${API_URL.replace("/api", "")}`}
-          style={{ width: "100%", height: "80vh" }}
-        >
-          Your browser does not support SVG.
-        </object>
-      </PopupDialog>
+  open={showRTLPopup}
+  onClose={() => setShowRTLPopup(false)}
+  title="RTL Schematic"
+>
+  {rtlPath ? (
+    <object
+      type="image/svg+xml"
+      data={`${API_URL.replace("/api", "")}${rtlPath}`}
+      style={{ width: "100%", height: "80vh" }}
+    >
+      Your browser does not support SVG.
+    </object>
+  ) : (
+    <div className="text-center text-gray-400 p-10">
+      RTL not generated
+    </div>
+  )}
+</PopupDialog>
     </div>
   );
 };
