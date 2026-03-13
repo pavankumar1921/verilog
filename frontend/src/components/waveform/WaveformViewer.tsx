@@ -938,7 +938,7 @@
 // };
 
 // export default WaveformViewer;
-import React, { useState } from "react";
+import { useState } from "react";
 import SignalPanel from "./SignalPanel";
 import WaveformCanvas from "./WaveformCanvas";
 import Timeline from "./Timeline";

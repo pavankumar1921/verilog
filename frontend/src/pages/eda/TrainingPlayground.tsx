@@ -4,7 +4,8 @@ import { Typography, Button } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CodeEditor from "../../components/CodeEditor";
 import PopupDialog from "../../components/PopupDialog";
-import WaveformViewer, { type VCDData } from "../../components/waveform/WaveformViewer";
+import WaveformViewer from "../../components/waveform/WaveformViewer";
+import type { VCDData } from "../../components/waveform/types";
 import { AnimatePresence, motion } from "framer-motion";
 
 // MUI icons (replacing lucide-react)
