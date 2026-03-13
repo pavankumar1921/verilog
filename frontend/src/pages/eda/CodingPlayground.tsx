@@ -15,7 +15,8 @@ import {
 } from "lucide-react";
 import PopupDialog from "../../components/PopupDialog";
 import CodeEditor from "../../components/CodeEditor";
-import WaveformViewer, { type VCDData } from "../../components/WaveformViewer";
+import WaveformViewer from "../../components/waveform/WaveformViewer";
+import type { VCDData } from "../../components/waveform/types";
 import API_URL from "../../config/api";
 
 const CodingPlayground: React.FC = () => {

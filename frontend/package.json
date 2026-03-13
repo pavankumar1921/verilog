@@ -18,10 +18,12 @@
     "@tailwindcss/cli": "^4.1.7",
     "framer-motion": "^12.23.12",
     "lucide-react": "^0.562.0",
+    "pixi.js": "^8.17.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.56.4",
-    "react-router-dom": "^7.6.0"
+    "react-router-dom": "^7.6.0",
+    "react-window": "^2.2.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.25.0",

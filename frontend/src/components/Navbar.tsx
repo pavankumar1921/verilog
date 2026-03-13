@@ -163,7 +163,11 @@ export default function Navbar({ toggleTheme, isDarkMode }: NavbarProps) {
             <span style={{ color: "limegreen" }}>S</span>andbox
           </Typography>
 
-          <HoverDropdown label="Coding" menuItems={[{ label: "Coding", to: "/coding" }]} />
+          {/* <HoverDropdown label="Coding" menuItems={[{ label: "Coding", to: "/coding" }]} /> */}
+       
+          <Link to="/coding" className="hover-dropdown">
+            Coding
+          </Link>
 
           <HoverDropdown
             label="Courses"

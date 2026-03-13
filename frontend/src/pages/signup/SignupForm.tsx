@@ -11,6 +11,7 @@ import {
 import { Facebook, Google, LinkedIn } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../config/env";
+import { useAuth } from "../../context/AuthContext";
 
 type Inputs = {
   name: string;
@@ -20,6 +21,7 @@ type Inputs = {
 
 const SignupForm: React.FC = () => {
   const theme = useTheme();
+  const  {login } = useAuth()
   const navigate = useNavigate();
   const {
     register,
@@ -29,7 +31,7 @@ const SignupForm: React.FC = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     try {
-      const response = await fetch(`${API_URL}/api/signup`, {
+      const response = await fetch(`${API_URL}/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -43,7 +45,14 @@ const SignupForm: React.FC = () => {
 
       const result = await response.json();
       console.log("✅ Signup successful:", result);
-      navigate("/login");
+       login({ email: data.email, token: result.token });
+
+      localStorage.setItem("authToken", result.token);
+      localStorage.setItem("userData", JSON.stringify(result.user));
+
+      navigate("/", {
+        state: {showSuccess : true }
+      });
     } catch (err) {
       console.error("Signup error:", err);
     }
