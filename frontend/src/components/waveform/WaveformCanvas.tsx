@@ -174,10 +174,10 @@ export default function WaveformCanvas({
           changes.forEach((change: any, ci: number) => {
             const x1 = timeToX(prevTime);
             const x2 = timeToX(change.time);
-            const nextX = ci < changes.length - 1
-              ? timeToX(changes[ci + 1].time)
-              : timeToX(maxTime);
-
+            // const _nextX = ci < changes.length - 1
+            //   ? timeToX(changes[ci + 1].time)
+            //   : timeToX(maxTime);
+            
             // Draw bus transition (X shape at transition)
             if (ci > 0) {
               const transW = Math.min(6, (x2 - x1) * 0.2);

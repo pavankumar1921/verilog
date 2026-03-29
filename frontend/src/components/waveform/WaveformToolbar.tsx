@@ -15,8 +15,8 @@ interface Props {
 
 export default function WaveformToolbar({
   onZoomIn, onZoomOut, onFitAll, onAddMarker,
-  showGrid, onToggleGrid, cursorTime, scale,
-  markers, onRemoveMarker,
+  showGrid, onToggleGrid, cursorTime, scale: _scale,
+  markers: _markers, onRemoveMarker: _onRemoveMarker,
 }: Props) {
   return (
     <div className="wv-toolbar">

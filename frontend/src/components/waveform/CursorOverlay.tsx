@@ -4,7 +4,7 @@ interface Props {
   x: number;
 }
 
-export default function CursorOverlay({ time, x }: Props) {
+export default function CursorOverlay({ time, x:_x }: Props) {
   return (
     <div className="wv-cursor-overlay">
       <div className="wv-cursor-badge">
