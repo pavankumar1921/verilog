@@ -1,13 +1,18 @@
-export default function CursorOverlay({time}:any){
 
-  return(
+interface Props {
+  time: number;
+  x: number;
+}
 
-    <div className="absolute top-2 right-2 bg-slate-900 px-3 py-1 text-xs text-white">
-
-      t = {time}ns
-
+export default function CursorOverlay({ time, x }: Props) {
+  return (
+    <div className="wv-cursor-overlay">
+      <div className="wv-cursor-badge">
+        <span className="wv-cursor-icon">T</span>
+        <span className="wv-cursor-eq">=</span>
+        <span className="wv-cursor-time">{time}</span>
+        <span className="wv-cursor-unit">ns</span>
+      </div>
     </div>
-
   );
-
 }

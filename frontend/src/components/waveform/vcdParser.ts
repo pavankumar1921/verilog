@@ -13,30 +13,19 @@ export function parseVCD(vcdText: string) {
       const parts = l.split(" ");
       const symbol = parts[3];
       const name = parts.slice(4).join(" ").replace("$end", "").trim();
-
       signals[symbol] = name;
       changes[symbol] = [];
-    }
-
-    else if (l.startsWith("#")) {
+    } else if (l.startsWith("#")) {
       currentTime = parseInt(l.substring(1));
-    }
-
-    else if (l.startsWith("b")) {
+    } else if (l.startsWith("b")) {
       const [value, symbol] = l.substring(1).split(" ");
       changes[symbol]?.push({ time: currentTime, value });
-    }
-
-    else if (l.startsWith("0") || l.startsWith("1")) {
+    } else if (l.startsWith("0") || l.startsWith("1")) {
       const value = l[0];
       const symbol = l.substring(1);
-
       changes[symbol]?.push({ time: currentTime, value });
     }
   }
 
-  return {
-    signals,
-    changes
-  };
+  return { signals, changes };
 }

@@ -1,3 +1,5 @@
+
+
 export interface VCDSignal {
   name: string;
   symbol: string;
@@ -6,9 +8,9 @@ export interface VCDSignal {
 }
 
 export interface VCDChange {
-  0: number;
-  1: string;
-  2: string;
+  0: number;   // time
+  1: string;   // symbol
+  2: string;   // value
 }
 
 export interface VCDData {
@@ -16,4 +18,25 @@ export interface VCDData {
   changes: VCDChange[];
   endtime?: string;
   scale?: string;
+}
+
+export interface SignalGroup {
+  name: string;
+  signals: VCDSignal[];
+  expanded: boolean;
+}
+
+export interface Marker {
+  id: number;
+  time: number;
+  color: string;
+}
+
+export interface ValueChange {
+  time: number;
+  signal: string;
+  edge: string;
+  from: string;
+  to: string;
+  duration: number;
 }

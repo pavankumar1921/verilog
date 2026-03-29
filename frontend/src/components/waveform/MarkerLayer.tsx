@@ -1,19 +1,14 @@
-export default function MarkerLayer({markers}:any){
 
-  return(
+import type { Marker } from "./types";
 
-    <div>
-
-      {markers.map((m:number)=>(
-        <div
-          key={m}
-          className="absolute bg-red-500 w-[2px]"
-          style={{left:m}}
-        />
-      ))}
-
-    </div>
-
-  );
-
+interface Props {
+  markers: Marker[];
 }
+
+export default function MarkerLayer({ markers }: Props) {
+  // Markers are now rendered inside the PixiJS canvas for precision.
+  // This component is kept for backward compatibility.
+  return null;
+}
+
+

@@ -7,56 +7,13 @@
 :vpi_module "C:\msys64\mingw64\lib\ivl\vhdl_textio.vpi";
 :vpi_module "C:\msys64\mingw64\lib\ivl\v2005_math.vpi";
 :vpi_module "C:\msys64\mingw64\lib\ivl\va_math.vpi";
-S_000002824a309110 .scope module, "tb" "tb" 2 1;
+S_000001a2ea8b6840 .scope module, "my_module" "my_module" 2 1;
  .timescale 0 0;
-v000002824a3d9480_0 .var "A", 0 0;
-v000002824a3dbe90_0 .var "B", 0 0;
-v000002824a3dbf30_0 .net "Y", 0 0, L_000002824a3d88d0;  1 drivers
-S_000002824a3092a0 .scope module, "uut" "and_gate" 2 6, 3 2 0, S_000002824a309110;
+S_000001a2ea8b69d0 .scope module, "tb" "tb" 3 1;
  .timescale 0 0;
-    .port_info 0 /INPUT 1 "A";
-    .port_info 1 /INPUT 1 "B";
-    .port_info 2 /OUTPUT 1 "Y";
-L_000002824a3d88d0 .functor AND 1, v000002824a3d9480_0, v000002824a3dbe90_0, C4<1>, C4<1>;
-v000002824a308630_0 .net "A", 0 0, v000002824a3d9480_0;  1 drivers
-v000002824a2d6b30_0 .net "B", 0 0, v000002824a3dbe90_0;  1 drivers
-v000002824a3d93e0_0 .net "Y", 0 0, L_000002824a3d88d0;  alias, 1 drivers
-    .scope S_000002824a309110;
-T_0 ;
-    %vpi_call 2 9 "$dumpfile", "dump.vcd" {0 0 0};
-    %vpi_call 2 10 "$dumpvars", 32'sb00000000000000000000000000000000, S_000002824a309110 {0 0 0};
-    %vpi_call 2 12 "$display", "A B | Y" {0 0 0};
-    %pushi/vec4 0, 0, 1;
-    %store/vec4 v000002824a3d9480_0, 0, 1;
-    %pushi/vec4 0, 0, 1;
-    %store/vec4 v000002824a3dbe90_0, 0, 1;
-    %delay 10, 0;
-    %vpi_call 2 15 "$display", "%b %b | %b", v000002824a3d9480_0, v000002824a3dbe90_0, v000002824a3dbf30_0 {0 0 0};
-    %pushi/vec4 0, 0, 1;
-    %store/vec4 v000002824a3d9480_0, 0, 1;
-    %pushi/vec4 1, 0, 1;
-    %store/vec4 v000002824a3dbe90_0, 0, 1;
-    %delay 10, 0;
-    %vpi_call 2 18 "$display", "%b %b | %b", v000002824a3d9480_0, v000002824a3dbe90_0, v000002824a3dbf30_0 {0 0 0};
-    %pushi/vec4 1, 0, 1;
-    %store/vec4 v000002824a3d9480_0, 0, 1;
-    %pushi/vec4 0, 0, 1;
-    %store/vec4 v000002824a3dbe90_0, 0, 1;
-    %delay 10, 0;
-    %vpi_call 2 21 "$display", "%b %b | %b", v000002824a3d9480_0, v000002824a3dbe90_0, v000002824a3dbf30_0 {0 0 0};
-    %pushi/vec4 1, 0, 1;
-    %store/vec4 v000002824a3d9480_0, 0, 1;
-    %pushi/vec4 1, 0, 1;
-    %store/vec4 v000002824a3dbe90_0, 0, 1;
-    %delay 10, 0;
-    %vpi_call 2 24 "$display", "%b %b | %b", v000002824a3d9480_0, v000002824a3dbe90_0, v000002824a3dbf30_0 {0 0 0};
-    %delay 10, 0;
-    %vpi_call 2 26 "$finish" {0 0 0};
-    %end;
-    .thread T_0;
 # The file index is used to find the file name in the following table.
 :file_names 4;
     "N/A";
     "<interactive>";
-    "testbench.v";
     "design.v";
+    "testbench.v";
