@@ -93,8 +93,8 @@ const Homepage: React.FC = () => {
         <div className="flex flex-col-reverse md:flex-row items-center justify-between w-full max-w-7xl gap-24 mx-auto">
           <div className="w-full md:w-1/2 space-y-6">
             <Typography variant="h3" fontWeight="bold" gutterBottom>
-              Welcome to <span style={{ color: "limegreen" }}>S</span>ilicon
-              <span style={{ color: "limegreen" }}>S</span>andbox
+              Welcome to <span style={{ color: "limegreen" }}>C</span>ore
+              <span style={{ color: "limegreen" }}>B</span>ugs
             </Typography>
 
             <Typography variant="h4" fontWeight="medium" gutterBottom>

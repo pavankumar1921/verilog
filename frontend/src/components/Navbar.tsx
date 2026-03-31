@@ -159,8 +159,8 @@ export default function Navbar({ toggleTheme, isDarkMode }: NavbarProps) {
             variant="h6"
             sx={{ fontWeight: "bold", textDecoration: "none", color: "inherit" }}
           >
-            <span style={{ color: "limegreen" }}>S</span>ilicon
-            <span style={{ color: "limegreen" }}>S</span>andbox
+            <span style={{ color: "limegreen" }}>C</span>ore
+            <span style={{ color: "limegreen" }}>B</span>ugs
           </Typography>
 
           {/* <HoverDropdown label="Coding" menuItems={[{ label: "Coding", to: "/coding" }]} /> */}
