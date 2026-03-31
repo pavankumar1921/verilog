@@ -96,7 +96,7 @@ const CodingPlayground: React.FC = () => {
     // purely UI; does not affect actions
     return [
       "═══════════════════════════════════════",
-      "  SiliconSandbox Coding Playground",
+      "  CoreBugs Coding Playground",
       "═══════════════════════════════════════",
       "",
     ].join("\n");
@@ -121,7 +121,7 @@ const CodingPlayground: React.FC = () => {
                 <Cpu className="w-5 h-5 text-white" />
               </div>
               <div className="leading-tight">
-                <div className="font-bold text-xl tracking-tight">SiliconSandbox</div>
+                <div className="font-bold text-xl tracking-tight">CoreBugs</div>
                 <div className="text-xs text-slate-400 -mt-0.5">Coding Playground</div>
               </div>
             </div>

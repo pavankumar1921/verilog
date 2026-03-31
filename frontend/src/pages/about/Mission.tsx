@@ -18,7 +18,7 @@ const Mission = () => {
         Our Mission
       </Typography>
       <Typography variant="body1">
-        Learn more about the mission and vision of Silicon Sandbox — empowering learners and engineers in digital design.
+        Learn more about the mission and vision of CoreBugs — empowering learners and engineers in digital design.
       </Typography>
     </Box>
   );

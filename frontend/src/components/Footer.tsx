@@ -28,7 +28,7 @@ const Footer = () => {
       >
         {/* Left Section */}
         <Typography variant="body2" color="textSecondary">
-          © {new Date().getFullYear()} Silicon Sandbox. All rights reserved.
+          © {new Date().getFullYear()} Core Bugs. All rights reserved.
         </Typography>
 
         <Stack direction="row" spacing={4}>

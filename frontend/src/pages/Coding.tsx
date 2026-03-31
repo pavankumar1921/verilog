@@ -23,7 +23,7 @@ const Coding: React.FC = () => {
       {!activePage && (
         <div className="text-center z-10">
           <Typography variant="h4" gutterBottom>
-            Welcome to <span className="text-lime-500">Silicon Sandbox</span>
+            Welcome to <span className="text-lime-500">CoreBugs</span>
           </Typography>
 
           <div className="flex gap-4 justify-center mt-4">

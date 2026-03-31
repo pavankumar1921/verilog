@@ -18,7 +18,7 @@ const Team = () => {
         Our Team
       </Typography>
       <Typography variant="body1">
-        Meet the minds behind Silicon Sandbox. This page will highlight our developers, educators, and contributors.
+        Meet the minds behind CoreBugs. This page will highlight our developers, educators, and contributors.
       </Typography>
     </Box>
   );

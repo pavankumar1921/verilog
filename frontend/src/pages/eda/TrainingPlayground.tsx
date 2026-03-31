@@ -187,8 +187,8 @@ const TrainingPlayground: React.FC = () => {
             <div className="flex items-center gap-2">
               <MemoryIcon className="text-emerald-400" fontSize="small" />
               <span className="font-bold text-lg">
-                <span className="text-emerald-400">Silicon</span>
-                <span>Sandbox</span>
+                <span className="text-emerald-400">Core</span>
+                <span>Bugs</span>
               </span>
             </div>
 
