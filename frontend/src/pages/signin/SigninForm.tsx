@@ -1,9 +1,8 @@
-// src/pages/signin/SigninForm.tsx
-// import React, { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { Box, TextField, Button, Typography, IconButton, useTheme } from "@mui/material";
+import { Box, TextField, Button, Typography, IconButton, useTheme, Alert } from "@mui/material";
 import { Facebook, Google, LinkedIn } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { API_URL } from "../../config/env";
 
@@ -13,40 +12,51 @@ type Inputs = {
 };
 
 const SigninForm: React.FC = () => {
-  const  {login } = useAuth()
+  const { login } = useAuth();
   const theme = useTheme();
   const navigate = useNavigate();
-  // const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = async (data: any) => {
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    setErrorMsg(null);
     try {
-      const response = await fetch(`${API_URL}/api/login`, {
+      const response = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.message || "Login failed");
-      }
       const result = await response.json();
-      console.log("successful", result);
-      login({email:data.email, token:result.token})
-      // setSnackbarOpen(true)
-      localStorage.setItem("authToken", result.token);
-      localStorage.setItem("userData", JSON.stringify(result.user));
-      // setTimeout(()=> navigate("/"),2000);
-      navigate("/",{
-        state: {showSuccess: true}
-      })
-    } catch (err) {
-      console.error("Login error:", err);
+
+      if (!response.ok) {
+        throw new Error(result.message || "Login failed");
+      }
+
+      // Fetch full user profile using the token
+      const profileRes = await fetch(`${API_URL}/auth/user`, {
+        headers: { Authorization: `Bearer ${result.token}` },
+      });
+      const profile = await profileRes.json();
+
+      login({
+        email: profile.email,
+        username: profile.username,
+        token: result.token,
+        role: profile.role,
+        avatar: profile.avatar,
+        xp: profile.xp,
+        coins: profile.coins,
+      });
+
+      navigate("/", { state: { showSuccess: true } });
+    } catch (err: any) {
+      setErrorMsg(err.message || "Something went wrong");
     }
   };
 
@@ -65,19 +75,21 @@ const SigninForm: React.FC = () => {
       </Box>
 
       <Typography color={theme.palette.text.secondary} fontSize="0.875rem">
-        or use your email for sign in
+        or use your email to sign in
       </Typography>
+
+      {errorMsg && <Alert severity="error">{errorMsg}</Alert>}
 
       <TextField
         label="Email"
         variant="outlined"
         fullWidth
-        {...register("email", { required: true })}
+        {...register("email", { required: "Email is required" })}
         error={!!errors.email}
-        helperText={errors.email && "Email is required"}
+        helperText={errors.email?.message}
         sx={{
-          backgroundColor: theme.palette.mode === 'dark' ? '#1e1e1e' : '#F5F5F5',
-          input: { color: theme.palette.text.primary }
+          backgroundColor: theme.palette.mode === "dark" ? "#1e1e1e" : "#F5F5F5",
+          input: { color: theme.palette.text.primary },
         }}
       />
 
@@ -86,64 +98,40 @@ const SigninForm: React.FC = () => {
         type="password"
         variant="outlined"
         fullWidth
-        {...register("password", { required: true })}
+        {...register("password", { required: "Password is required" })}
         error={!!errors.password}
-        helperText={errors.password && "Password is required"}
+        helperText={errors.password?.message}
         sx={{
-          backgroundColor: theme.palette.mode === 'dark' ? '#1e1e1e' : '#F5F5F5',
-          input: { color: theme.palette.text.primary }
+          backgroundColor: theme.palette.mode === "dark" ? "#1e1e1e" : "#F5F5F5",
+          input: { color: theme.palette.text.primary },
         }}
       />
 
       <Typography
         variant="caption"
         alignSelf="flex-end"
-        sx={{
-          color: theme.palette.text.primary,
-          cursor: "pointer",
-        }}
+        sx={{ color: theme.palette.text.primary, cursor: "pointer" }}
       >
-        Forget Your Password?
+        Forgot Your Password?
       </Typography>
 
       <Button
         type="submit"
         variant="contained"
         fullWidth
+        disabled={isSubmitting}
         sx={{
           mt: 1,
-          backgroundColor: theme.palette.mode === 'dark' ? '#444' : '#000',
-          color: '#FFF',
-          '&:hover': {
-            backgroundColor: theme.palette.mode === 'dark' ? '#666' : '#333',
+          backgroundColor: theme.palette.mode === "dark" ? "#444" : "#000",
+          color: "#FFF",
+          "&:hover": {
+            backgroundColor: theme.palette.mode === "dark" ? "#666" : "#333",
           },
         }}
       >
-        SIGN IN
+        {isSubmitting ? "Signing in..." : "SIGN IN"}
       </Button>
-      {/* <Snackbar
-  open={snackbarOpen}
-  autoHideDuration={3000}
-  onClose={() => setSnackbarOpen(false)}
-  anchorOrigin={{ vertical: "top", horizontal: "center" }}
-  sx={{ mt: 2 }}
->
-  <Alert
-    severity="success"
-    sx={{
-      width: "100%",
-      fontSize: "1rem",
-      py: 1.5,
-      px: 4,
-      borderRadius: 2,
-    }}
-  >
-     Signed in successfully.
-  </Alert>
-</Snackbar> */}
-
     </Box>
-
   );
 };
 

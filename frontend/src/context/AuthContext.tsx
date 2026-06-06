@@ -1,8 +1,13 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-type User = {
+export type User = {
   email: string;
+  username: string;
   token: string;
+  role: "user" | "admin";
+  avatar: string | null;
+  xp: number;
+  coins: number;
 };
 
 interface AuthContextType {

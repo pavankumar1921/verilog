@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import {
   Box,
@@ -6,55 +6,61 @@ import {
   Button,
   Typography,
   IconButton,
-  useTheme
+  Alert,
+  useTheme,
 } from "@mui/material";
 import { Facebook, Google, LinkedIn } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import { API_URL } from "../../config/env";
 import { useAuth } from "../../context/AuthContext";
+import { API_URL } from "../../config/env";
 
 type Inputs = {
-  name: string;
+  username: string;
   email: string;
   password: string;
 };
 
 const SignupForm: React.FC = () => {
   const theme = useTheme();
-  const  {login } = useAuth()
   const navigate = useNavigate();
+  const { login } = useAuth();
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    setErrorMsg(null);
     try {
-      const response = await fetch(`${API_URL}/signup`, {
+      const response = await fetch(`${API_URL}/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.message || "Signup failed");
+      const result = await response.json();
 
+      if (!response.ok) {
+        throw new Error(result.message || "Signup failed");
       }
 
-      const result = await response.json();
-      console.log("✅ Signup successful:", result);
-       login({ email: data.email, token: result.token });
-
-      localStorage.setItem("authToken", result.token);
-      localStorage.setItem("userData", JSON.stringify(result.user));
-
-      navigate("/", {
-        state: {showSuccess : true }
+      // Signup successful — auto login and go to homepage
+      login({
+        email: result.user.email,
+        username: result.user.username,
+        token: result.token,
+        role: result.user.role,
+        avatar: result.user.avatar,
+        xp: result.user.xp,
+        coins: result.user.coins,
       });
-    } catch (err) {
-      console.error("Signup error:", err);
+
+      navigate("/", { state: { showSuccess: true } });
+    } catch (err: any) {
+      setErrorMsg(err.message || "Something went wrong");
     }
   };
 
@@ -76,16 +82,18 @@ const SignupForm: React.FC = () => {
         or use your email for registration
       </Typography>
 
+      {errorMsg && <Alert severity="error">{errorMsg}</Alert>}
+
       <TextField
-        label="Name"
+        label="Username"
         variant="outlined"
         fullWidth
-        {...register("name", { required: true })}
-        error={!!errors.name}
-        helperText={errors.name && "Name is required"}
+        {...register("username", { required: "Username is required" })}
+        error={!!errors.username}
+        helperText={errors.username?.message}
         sx={{
-          backgroundColor: theme.palette.mode === 'dark' ? '#1e1e1e' : '#F5F5F5',
-          input: { color: theme.palette.text.primary }
+          backgroundColor: theme.palette.mode === "dark" ? "#1e1e1e" : "#F5F5F5",
+          input: { color: theme.palette.text.primary },
         }}
       />
 
@@ -94,12 +102,12 @@ const SignupForm: React.FC = () => {
         type="email"
         variant="outlined"
         fullWidth
-        {...register("email", { required: true })}
+        {...register("email", { required: "Email is required" })}
         error={!!errors.email}
-        helperText={errors.email && "Email is required"}
+        helperText={errors.email?.message}
         sx={{
-          backgroundColor: theme.palette.mode === 'dark' ? '#1e1e1e' : '#F5F5F5',
-          input: { color: theme.palette.text.primary }
+          backgroundColor: theme.palette.mode === "dark" ? "#1e1e1e" : "#F5F5F5",
+          input: { color: theme.palette.text.primary },
         }}
       />
 
@@ -108,12 +116,15 @@ const SignupForm: React.FC = () => {
         type="password"
         variant="outlined"
         fullWidth
-        {...register("password", { required: true })}
+        {...register("password", {
+          required: "Password is required",
+          minLength: { value: 6, message: "Password must be at least 6 characters" },
+        })}
         error={!!errors.password}
-        helperText={errors.password && "Password is required"}
+        helperText={errors.password?.message}
         sx={{
-          backgroundColor: theme.palette.mode === 'dark' ? '#1e1e1e' : '#F5F5F5',
-          input: { color: theme.palette.text.primary }
+          backgroundColor: theme.palette.mode === "dark" ? "#1e1e1e" : "#F5F5F5",
+          input: { color: theme.palette.text.primary },
         }}
       />
 
@@ -121,21 +132,25 @@ const SignupForm: React.FC = () => {
         type="submit"
         variant="contained"
         fullWidth
+        disabled={isSubmitting}
         sx={{
           mt: 1,
-          backgroundColor: theme.palette.mode === 'dark' ? '#444' : '#000',
-          color: '#FFF',
-          '&:hover': {
-            backgroundColor: theme.palette.mode === 'dark' ? '#666' : '#333',
+          backgroundColor: theme.palette.mode === "dark" ? "#444" : "#000",
+          color: "#FFF",
+          "&:hover": {
+            backgroundColor: theme.palette.mode === "dark" ? "#666" : "#333",
           },
         }}
       >
-        SIGN UP
+        {isSubmitting ? "Creating account..." : "SIGN UP"}
       </Button>
 
       <Typography variant="body2" align="center">
-        Already have an account?{' '}
-        <a href="/login" style={{ color: theme.palette.primary.main, textDecoration: 'underline' }}>
+        Already have an account?{" "}
+        <a
+          href="/login"
+          style={{ color: theme.palette.primary.main, textDecoration: "underline" }}
+        >
           Sign in here
         </a>
       </Typography>
