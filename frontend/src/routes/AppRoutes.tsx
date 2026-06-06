@@ -7,6 +7,7 @@ import CodingPlayground from '../pages/eda/CodingPlayground';
 import Coding from '../pages/Coding';
 import TrainingPlayground from '../pages/eda/TrainingPlayground';
 import ProtectedRoute from './ProtectedRoute';
+import Dashboard from '../pages/dashboard';
 import DigitalCourse from '../pages/courses/Digital';
 import VerilogCourse from '../pages/courses/Verilog';
 import SystemVerilogCourse from '../pages/courses/SystemVerilog';
@@ -29,6 +30,7 @@ const AppRoutes = () => {
       <Route path="/login" element={<Signin />} />
       <Route path="/" element={<Homepage />} />
       <Route path="/codingplayground" element={<CodingPlayground />} />
+      <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/trainingplayground" element={ <ProtectedRoute> <TrainingPlayground /></ProtectedRoute>} />
       <Route path="/coding" element={<Coding/>} />
       
