@@ -21,6 +21,7 @@ app.use("/api", require("./src/routes/auth"));
 // app.use("/api", require("./src/routes/enrollments"));
 // app.use("/api", require("./src/routes/progress"));
 app.use("/api", require("./src/routes/simulate"));
+app.use("/api", require("./src/routes/courses"));
 
 // ─── Static files (simulation output) ────────────────────────
 app.use(

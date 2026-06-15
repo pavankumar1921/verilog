@@ -23,6 +23,11 @@ import Team from '../pages/about/Team';
 import Mission from '../pages/about/Mission';
 import Careers from '../pages/about/Careers';
 
+// Course pages
+import CourseList from '../pages/courses/CourseList';
+import ModuleList from '../pages/courses/ModuleList';
+import LessonPage from '../pages/courses/LessonPage';
+
 const AppRoutes = () => {
   return (
     <Routes>
@@ -35,10 +40,13 @@ const AppRoutes = () => {
       <Route path="/coding" element={<Coding/>} />
       
       {/* courses*/}
-      <Route path="/courses/digital" element={<DigitalCourse />} />
+       <Route path="/courses/:category"                                               element={<CourseList />} />
+      <Route path="/courses/:category/:courseId"                                     element={<ModuleList />} />
+      <Route path="/courses/:category/:courseId/:moduleId/:lessonId"                 element={<LessonPage />} />
+      {/* <Route path="/courses/digital" element={<DigitalCourse />} />
       <Route path="/courses/verilog" element={<VerilogCourse />} />
       <Route path="/courses/systemVerilog" element={<SystemVerilogCourse />} />
-      <Route path="/courses/uvm" element={<UVMCourse />} />
+      <Route path="/courses/uvm" element={<UVMCourse />} /> */}
 
         {/* Projects */}
       <Route path="/projects/design" element={<DesignProjects />} />
