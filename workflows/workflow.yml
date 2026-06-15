@@ -1,0 +1,147 @@
+name: CI/CD Pipeline
+ 
+on:
+  push:
+    branches: [main, dev, test]
+  pull_request:
+    branches: [main, dev]
+ 
+env:
+  NODE_VERSION: "20"
+ 
+jobs:
+  # ─────────────────────────────────────────
+  # Run tests on every branch
+  # ─────────────────────────────────────────
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+ 
+    services:
+      mongodb:
+        image: mongo:7
+        ports:
+          - 27017:27017
+ 
+    steps:
+      - uses: actions/checkout@v4
+ 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+ 
+      - name: Install backend dependencies
+        working-directory: backend
+        run: npm ci
+ 
+      - name: Write .env.test
+        working-directory: backend
+        run: |
+          echo "PORT=5000"                                              >> .env.test
+          echo "MONGODB_URL=${{ secrets.TEST_MONGODB_URL }}"           >> .env.test
+          echo "JWT_SECRET=${{ secrets.TEST_JWT_SECRET }}"             >> .env.test
+          echo "MAX_EXECUTION_TIME=${{ secrets.MAX_EXECUTION_TIME }}"  >> .env.test
+          echo "ENABLE_LOGS=true"                                       >> .env.test
+ 
+      - name: Run backend tests
+        working-directory: backend
+        run: npm test
+ 
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+ 
+      - name: Frontend build check
+        working-directory: frontend
+        run: npm run build
+ 
+  # ─────────────────────────────────────────
+  # Deploy to PROD — only on push to main
+  # ─────────────────────────────────────────
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    environment: production
+ 
+    steps:
+      - uses: actions/checkout@v4
+ 
+      # ── Backend → Render ───────────────────
+      - name: Deploy backend → Render
+        run: curl -s --fail -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+ 
+      # ── Frontend → Netlify ─────────────────
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+ 
+      - name: Install frontend dependencies
+        working-directory: frontend
+        run: npm ci
+ 
+      - name: Build frontend
+        working-directory: frontend
+        run: |
+          echo "VITE_ENV=production"                              >> .env
+          echo "VITE_API_URL=${{ secrets.PROD_API_URL }}"         >> .env
+          echo "VITE_MAX_CODE_SIZE=${{ secrets.MAX_CODE_SIZE }}"  >> .env
+          npm run build
+ 
+      - name: Deploy frontend → Netlify
+        uses: nwtgck/actions-netlify@v3.0
+        with:
+          publish-dir: frontend/dist
+          production-deploy: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "PROD deploy @ ${{ github.sha }}"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+ 
+      # ── Slack on success ───────────────────
+      - name: Notify Slack — deploy succeeded
+        if: success()
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          payload: |
+            {
+              "text": "✅ *PROD deploy succeeded*",
+              "attachments": [{
+                "color": "good",
+                "fields": [
+                  { "title": "Triggered by", "value": "${{ github.actor }}", "short": true },
+                  { "title": "Commit",       "value": "${{ github.sha }}",   "short": true },
+                  { "title": "Run", "value": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}", "short": false }
+                ]
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+ 
+      # ── Slack on failure ───────────────────
+      - name: Notify Slack — deploy failed
+        if: failure()
+        uses: slackapi/slack-github-action@v1.26.0
+        with:
+          payload: |
+            {
+              "text": "❌ *PROD deploy failed*",
+              "attachments": [{
+                "color": "danger",
+                "fields": [
+                  { "title": "Triggered by", "value": "${{ github.actor }}", "short": true },
+                  { "title": "Commit",       "value": "${{ github.sha }}",   "short": true },
+                  { "title": "Run", "value": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}", "short": false }
+                ]
+              }]
+            }
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK

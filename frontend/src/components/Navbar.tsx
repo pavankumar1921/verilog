@@ -234,12 +234,11 @@ export default function Navbar({ toggleTheme, isDarkMode }: NavbarProps) {
                     <Paper sx={{ mt: 1, minWidth: 180 }}>
                       <ClickAwayListener onClickAway={() => setAnchorEl(null)}>
                         <MenuList autoFocusItem={open}>
-                          <MenuItem component={Link} to="/profile" onClick={() => setAnchorEl(null)}>
-                            Profile
+                          <MenuItem component={Link} to="/dashboard" onClick={() => setAnchorEl(null)}>
+                            Dashboard
                           </MenuItem>
-                          <MenuItem onClick={() => { logout(); setAnchorEl(null); setSnackbarOpen(true); setTimeout(()=>navigate("/"),1500);}}>Logout</MenuItem>
                           <Divider />
-                          <MenuItem disabled>Settings</MenuItem>
+                          <MenuItem onClick={() => { logout(); setAnchorEl(null); setSnackbarOpen(true); setTimeout(()=>navigate("/"),1500);}}>Logout</MenuItem>
                         </MenuList>
                       </ClickAwayListener>
                     </Paper>

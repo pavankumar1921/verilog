@@ -1,14 +1,20 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-type User = {
+export type User = {
   email: string;
+  username: string;
   token: string;
+  role: "user" | "admin";
+  avatar: string | null;
+  xp: number;
+  coins: number;
 };
 
 interface AuthContextType {
   user: User | null;
   login: (data: User) => void;
   logout: () => void;
+  updateUser: (data: Partial<User>) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -31,8 +37,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.removeItem("user");
   };
 
+  const updateUser = (data: Partial<User>) => {
+    const updated = { ...user!, ...data };
+    setUser(updated);
+    localStorage.setItem("user", JSON.stringify(updated));
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );
