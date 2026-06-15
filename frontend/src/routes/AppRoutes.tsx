@@ -8,10 +8,10 @@ import Coding from '../pages/Coding';
 import TrainingPlayground from '../pages/eda/TrainingPlayground';
 import ProtectedRoute from './ProtectedRoute';
 import Dashboard from '../pages/dashboard';
-import DigitalCourse from '../pages/courses/Digital';
-import VerilogCourse from '../pages/courses/Verilog';
-import SystemVerilogCourse from '../pages/courses/SystemVerilog';
-import UVMCourse from '../pages/courses/UVM';
+// import DigitalCourse from '../pages/courses/Digital';
+// import VerilogCourse from '../pages/courses/Verilog';
+// import SystemVerilogCourse from '../pages/courses/SystemVerilog';
+// import UVMCourse from '../pages/courses/UVM';
 import DesignProjects from '../pages/projects/Design';
 import VerificationProjects from '../pages/projects/Verification';
 import QuestionSets from '../pages/interview/QuestionSets';
@@ -43,10 +43,10 @@ const AppRoutes = () => {
        <Route path="/courses/:category"                                               element={<CourseList />} />
       <Route path="/courses/:category/:courseId"                                     element={<ModuleList />} />
       <Route path="/courses/:category/:courseId/:moduleId/:lessonId"                 element={<LessonPage />} />
-      <Route path="/courses/digital" element={<DigitalCourse />} />
+      {/* <Route path="/courses/digital" element={<DigitalCourse />} />
       <Route path="/courses/verilog" element={<VerilogCourse />} />
       <Route path="/courses/systemVerilog" element={<SystemVerilogCourse />} />
-      <Route path="/courses/uvm" element={<UVMCourse />} />
+      <Route path="/courses/uvm" element={<UVMCourse />} /> */}
 
         {/* Projects */}
       <Route path="/projects/design" element={<DesignProjects />} />
