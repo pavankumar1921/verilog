@@ -43,10 +43,10 @@ const AppRoutes = () => {
        <Route path="/courses/:category"                                               element={<CourseList />} />
       <Route path="/courses/:category/:courseId"                                     element={<ModuleList />} />
       <Route path="/courses/:category/:courseId/:moduleId/:lessonId"                 element={<LessonPage />} />
-      {/* <Route path="/courses/digital" element={<DigitalCourse />} />
+      <Route path="/courses/digital" element={<DigitalCourse />} />
       <Route path="/courses/verilog" element={<VerilogCourse />} />
       <Route path="/courses/systemVerilog" element={<SystemVerilogCourse />} />
-      <Route path="/courses/uvm" element={<UVMCourse />} /> */}
+      <Route path="/courses/uvm" element={<UVMCourse />} />
 
         {/* Projects */}
       <Route path="/projects/design" element={<DesignProjects />} />
