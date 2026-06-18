@@ -10,6 +10,10 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
 
+      workbox: {
+        globIgnores: ["**/surfer/**"],
+      },
+
       manifest: {
         name: "CoreBugs",
         short_name: "CoreBugs",
