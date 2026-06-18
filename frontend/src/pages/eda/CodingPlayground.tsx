@@ -15,7 +15,8 @@ import {
 } from "lucide-react";
 import PopupDialog from "../../components/PopupDialog";
 import CodeEditor from "../../components/CodeEditor";
-import WaveformViewer from "../../components/waveform/WaveformViewer";
+// import WaveformViewer from "../../components/waveform/WaveformViewer";
+import SurferViewer from "../../components/SurferViewer"; //surfer
 import type { VCDData } from "../../components/waveform/types";
 import API_URL from "../../config/api";
 
@@ -25,6 +26,7 @@ const CodingPlayground: React.FC = () => {
   const [designCode, setDesignCode] = useState(`module my_module;\nendmodule`);
   const [tbCode, setTbCode] = useState(`module tb;\nendmodule`);
   const [waveformData, setWaveformData] = useState<VCDData | null>(null);
+  const [vcdUrl, setVcdUrl] = useState<string | null>(null); //surfer
   const [simulationOutput, setSimulationOutput] = useState("");
   const [simulationSuccess, setSimulationSuccess] = useState(false);
   const [showWaveformPopup, setShowWaveformPopup] = useState(false);
@@ -38,6 +40,7 @@ const CodingPlayground: React.FC = () => {
     setSimulationSuccess(false);
     setSimulationOutput("Running simulation...\n");
     setWaveformData(null);
+    setVcdUrl(null); //surfer
     setRtlPath(null);
 
     const response = await fetch(`${API_URL}/simulate`, {
@@ -68,6 +71,8 @@ const CodingPlayground: React.FC = () => {
 
       if (result.waveform) {
         setWaveformData(result.waveform);
+        const base = API_URL.replace("/api", "");//surfer
+        setVcdUrl(`${base}/simulations/temp/dump.vcd?t=${Date.now()}`);//SURFER
       }
 
       if (result.svg) {
@@ -86,6 +91,7 @@ const CodingPlayground: React.FC = () => {
     setDesignCode(`module my_module;\nendmodule`);
     setTbCode(`module tb;\nendmodule`);
     setWaveformData(null);
+    setVcdUrl(null); //surfer
     setSimulationOutput("");
     setSimulationSuccess(false);
     setShowWaveformPopup(false);
@@ -286,7 +292,8 @@ const CodingPlayground: React.FC = () => {
           onClose={() => setShowWaveformPopup(false)}
           title="Waveform Viewer"
         >
-          <WaveformViewer vcdData={waveformData} />
+          {/* <WaveformViewer vcdData={waveformData} /> */}
+          <SurferViewer vcdUrl={vcdUrl} />
         </PopupDialog>
 
         <PopupDialog

@@ -4,7 +4,8 @@ import { Typography, Button } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import CodeEditor from "../../components/CodeEditor";
 import PopupDialog from "../../components/PopupDialog";
-import WaveformViewer from "../../components/waveform/WaveformViewer";
+//import WaveformViewer from "../../components/waveform/WaveformViewer";
+import SurferViewer from "../../components/SurferViewer";
 import type { VCDData } from "../../components/waveform/types";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -71,6 +72,7 @@ const TrainingPlayground: React.FC = () => {
 
   const [designCode, setDesignCode] = useState("module my_module;\nendmodule");
   const [tbCode, setTbCode] = useState("module tb;\nendmodule");
+  const [vcdUrl, setVcdUrl] = useState<string | null>(null); //surfer
   const [waveformData, setWaveformData] = useState<VCDData | null>(null);
   const [simulationOutput, setSimulationOutput] = useState("");
   const [simulationSuccess, setSimulationSuccess] = useState(false);
@@ -103,6 +105,7 @@ const TrainingPlayground: React.FC = () => {
       setIsRunning(true);
       setSimulationOutput("Running simulation...\n");
       setWaveformData(null);
+      setVcdUrl(null);//surfer
 
       // UI-only terminal lines (derived from existing output state)
       setTerminalLines([{ type: "info", text: "▶ Starting simulation...", time: "0ms" }]);
@@ -131,6 +134,8 @@ const TrainingPlayground: React.FC = () => {
         setSimulationSuccess(true);
         if (result.waveform) {
           setWaveformData(result.waveform);
+          const base = API_URL.replace("/api", "");//surfer
+          setVcdUrl(`${base}/simulations/temp/dump.vcd?t=${Date.now()}`);//SURFER
         }
         if (result.svg){
           setRtlPath(result.svg)
@@ -169,6 +174,7 @@ const TrainingPlayground: React.FC = () => {
     setSimulationOutput("");
     setSimulationSuccess(false);
     setWaveformData(null);
+    setVcdUrl(null);//surfer
     setTerminalLines([]);
     setIsRunning(false);
   }, [currentIndex]);
@@ -601,7 +607,8 @@ const TrainingPlayground: React.FC = () => {
         onClose={() => setShowWaveformPopup(false)}
         title="Waveform Viewer"
       >
-        <WaveformViewer vcdData={waveformData} />
+        {/* <WaveformViewer vcdData={waveformData} /> */}
+        <SurferViewer vcdUrl={vcdUrl} />
       </PopupDialog>
 
       <PopupDialog
