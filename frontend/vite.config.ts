@@ -12,6 +12,7 @@ export default defineConfig({
 
       workbox: {
         globIgnores: ["**/surfer/**"],
+        navigateFallbackDenylist: [/^\/surfer\//], 
       },
 
       manifest: {
