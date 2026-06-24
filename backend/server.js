@@ -26,6 +26,10 @@ app.use("/api", require("./src/routes/courses"));
 // ─── Static files (simulation output) ────────────────────────
 app.use(
   "/simulations",
+  (req,res,next)=>{
+    res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+    next();
+  },
   express.static(path.join(process.cwd(), "src", "simulations"))
 );
 
